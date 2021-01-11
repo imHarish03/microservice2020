@@ -14,6 +14,10 @@ public class Controller {
 	@Autowired
 	private Environment environment;
 
+	/*
+	 * @Autowired private ExchangeRepository exchangeRepository;
+	 */
+
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
 
