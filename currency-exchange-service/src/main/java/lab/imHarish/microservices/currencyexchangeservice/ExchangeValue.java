@@ -66,4 +66,10 @@ public class ExchangeValue {
 		this.port = port;
 	}
 
+	@Override
+	public String toString() {
+		return "ExchangeValue [id=" + id + ", exchangeFrom=" + exchangeFrom + ", exchangeTo=" + exchangeTo
+				+ ", conversionMultiple=" + conversionMultiple + ", port=" + port + "]";
+	}
+
 }
