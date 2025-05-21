@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,10 +47,17 @@ public class CurrencyConversionController {
 	}
 
 	@GetMapping("/auth/from/{from}/to/{to}/quantity/{quantity}")
+	@Retry(name = "currency", fallbackMethod = "fallback")
 	public String auth(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
 
+		System.out.println("Currency API invoking");
 		CurrencyConversionBean response = currencyExchangeProxy.authValue("Harisdhabdh");
 
 		return "Welcome";
 	}
+
+	public String fallback(String input, Exception ex) {
+		return "fallback response";
+	}
+
 }
