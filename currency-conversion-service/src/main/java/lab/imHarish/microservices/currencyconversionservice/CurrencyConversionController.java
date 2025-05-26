@@ -19,9 +19,11 @@ public class CurrencyConversionController {
 	private CurrencyExchangeProxy currencyExchangeProxy;
 
 	@GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
+	@Retry(name = "currency", fallbackMethod = "fallback")
 	public CurrencyConversionBean convertCurrency(@PathVariable String from, @PathVariable String to,
 			@PathVariable BigDecimal quantity) {
 
+		System.out.println("*****************************Currency API invoking*****************************");
 		// Setting Query params
 		Map<String, String> variables = new HashMap<>();
 		variables.put("from", from);
@@ -47,7 +49,7 @@ public class CurrencyConversionController {
 	}
 
 	@GetMapping("/auth/from/{from}/to/{to}/quantity/{quantity}")
-	@Retry(name = "currency", fallbackMethod = "fallback")
+
 	public String auth(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
 
 		System.out.println("Currency API invoking");
@@ -58,6 +60,11 @@ public class CurrencyConversionController {
 
 	public String fallback(String input, Exception ex) {
 		return "fallback response";
+	}
+
+	public CurrencyConversionBean fallback(String from, String to, BigDecimal quantity, Throwable ex) {
+		// You can log the exception or build a default response
+		return new CurrencyConversionBean(0L, from, to, BigDecimal.ZERO, quantity, BigDecimal.ZERO, 0);
 	}
 
 }
