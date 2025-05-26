@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 public class CurrencyConversionController {
+	private static final Logger logger = LogManager.getLogger(CurrencyConversionController.class);
 
 	@Autowired
 	private CurrencyExchangeProxy currencyExchangeProxy;
@@ -39,9 +42,11 @@ public class CurrencyConversionController {
 	}
 
 	@GetMapping("/currency-converter-feign/from/{from}/to/{to}/quantity/{quantity}")
+	@Retry(name = "currency", fallbackMethod = "fallback")
 	public CurrencyConversionBean convertCurrencyFeign(@PathVariable String from, @PathVariable String to,
 			@PathVariable BigDecimal quantity) {
 
+		logger.info("**********************Currency API invoking via Feign**********************");
 		CurrencyConversionBean response = currencyExchangeProxy.retrieveExchangeValue(from, to);
 
 		return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
