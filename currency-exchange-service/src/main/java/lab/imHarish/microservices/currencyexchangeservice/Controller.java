@@ -22,7 +22,6 @@ public class Controller {
 
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
-
 		return new ExchangeValue(1000L, from, to, BigDecimal.valueOf(65),
 				Integer.parseInt(environment.getProperty("local.server.port")));
 	}
@@ -30,9 +29,7 @@ public class Controller {
 	@GetMapping("/auth")
 	public ExchangeValue authValue(
 			@RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
-
 		System.out.println(authorizationHeader);
-
 		return new ExchangeValue(1000L, null, null, BigDecimal.valueOf(65),
 				Integer.parseInt(environment.getProperty("local.server.port")));
 	}
