@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+    currency-conversion:
+        image: currency-conversion-service
+        container_name: currency-conversion-container
+        mem_limit: 768m
+        ports:
+            - "8100:8100"
+        networks:
+            - currency-network
+
+networks:
+    currency-network:
