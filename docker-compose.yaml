@@ -24,5 +24,19 @@ services:
         environment:
             -   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://admin:admin1234@registry:8761/services/registry/eureka
 
+    currency-exchange:
+        image: currency-exchange-service
+        container_name: currency-exchange-container
+        mem_limit: 768m
+        ports:
+            - "8000:8000"
+        networks:
+            - currency-network
+        depends_on:
+            -   registry
+        environment:
+            -   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE= http://admin:admin1234@registry:8761/services/registry/eureka
+            -   SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/micro?allowPublicKeyRetrieval=true&useSSL=false
+
 networks:
     currency-network:
